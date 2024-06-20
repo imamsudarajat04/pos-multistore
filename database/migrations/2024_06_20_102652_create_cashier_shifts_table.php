@@ -11,21 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('cashier_shifts', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('firstname');
-            $table->string('lastname');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->string('phonenumber');
-            $table->enum('gender', ['man', 'woman']);
-            $table->enum('status', ['active', 'inactive']);
+            $table->foreignUuid('user_id')
+                ->constrained('users')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
             $table->foreignUuid('store_id')
                 ->constrained('stores')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->rememberToken();
+            $table->timestamp('opened_at');
+            $table->timestamp('closed_at')->nullable();
+            $table->decimal('openingbalance', 10, 2);
+            $table->decimal('closingbalance', 10, 2)
+                ->nullable();
             $table->timestamps();
         });
     }
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('cashier_shifts');
     }
 };

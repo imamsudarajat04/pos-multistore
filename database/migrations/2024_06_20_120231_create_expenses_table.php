@@ -11,21 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('expenses', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('firstname');
-            $table->string('lastname');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->string('phonenumber');
-            $table->enum('gender', ['man', 'woman']);
-            $table->enum('status', ['active', 'inactive']);
             $table->foreignUuid('store_id')
                 ->constrained('stores')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->rememberToken();
+            $table->foreignUuid('user_id')
+                ->constrained('users')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+            $table->decimal('amount', 10, 2);
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
@@ -35,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('expenses');
     }
 };
