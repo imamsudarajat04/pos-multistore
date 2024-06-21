@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('city');
             $table->string('province');
             $table->string('country');
-            $table->string('logo');
+            $table->string('logo')->nullable();
             $table->string('receiptheader');
             $table->string('receiptfootnotes');
             $table->timestamps();

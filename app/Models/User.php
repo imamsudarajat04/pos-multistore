@@ -55,9 +55,14 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'firstname',
+        'lastname',
         'email',
         'password',
+        'phonenumber',
+        'gender',
+        'status',
+        'store_id',
     ];
 
     /**
@@ -78,4 +83,32 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function cashierShifts()
+    {
+        return $this->hasMany(CashierShifts::class);
+    }
+
+    public function store()
+    {
+        return $this->belongsTo(Stores::class);
+    }
+
+    // Define the relationship with the Purchases model
+    public function purchases()
+    {
+        return $this->hasMany(Purchases::class);
+    }
+
+    // Define the relationship with the Transactions model
+    public function transactions()
+    {
+        return $this->hasMany(Transactions::class);
+    }
+
+    // Define the relationship with the Expenses model
+    public function expenses()
+    {
+        return $this->hasMany(Expenses::class);
+    }
 }
